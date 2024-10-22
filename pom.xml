@@ -155,16 +155,18 @@
                                     <database>
                                         <inputSchema>public</inputSchema>
                                         <excludes>flyway_schema_history</excludes>
-                                        <!-- Used for optimistic locking. See VjJooqConfiguration class -->
-                                        <recordVersionFields>version</recordVersionFields>
                                     </database>
                                     <generate>
+                                        <!--
                                         <springAnnotations>true</springAnnotations>
                                         <springDao>true</springDao>
                                         <pojos>true</pojos>
+                                        <interfaces>true</interfaces>
+                                        <validationAnnotations>true</validationAnnotations>
+                                        -->
                                     </generate>
                                     <target>
-                                        <packageName>ch.martinelli.demo.jooq</packageName>
+                                        <packageName>ch.martinelli.demo.jooq.db</packageName>
                                     </target>
                                 </generator>
                             </jooq>
