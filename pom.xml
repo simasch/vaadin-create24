@@ -158,11 +158,15 @@
                                     </database>
                                     <generate>
                                         <!--
+                                        <pojos>true</pojos>
+                                        <pojosEqualsAndHashCode>false</pojosEqualsAndHashCode>
+                                        <pojosToString>false</pojosToString>
+                                        <daos>true</daos>
+                                        <pojosAsJavaRecordClasses>true</pojosAsJavaRecordClasses>
+                                        <validationAnnotations>true</validationAnnotations>
                                         <springAnnotations>true</springAnnotations>
                                         <springDao>true</springDao>
-                                        <pojos>true</pojos>
                                         <interfaces>true</interfaces>
-                                        <validationAnnotations>true</validationAnnotations>
                                         -->
                                     </generate>
                                     <target>
