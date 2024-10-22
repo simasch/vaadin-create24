@@ -53,6 +53,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.seventytwo.oss</groupId>
+            <artifactId>vaadin-jooq</artifactId>
+            <version>2.0.4</version>
+        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -156,7 +161,7 @@
                                     <generate>
                                         <springAnnotations>true</springAnnotations>
                                         <springDao>true</springDao>
-                                        <daos>true</daos>
+                                        <pojos>true</pojos>
                                     </generate>
                                     <target>
                                         <packageName>ch.martinelli.demo.jooq</packageName>
