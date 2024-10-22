@@ -1,6 +1,7 @@
 package ch.martinelli.demo.jooq.views;
 
 import ch.martinelli.demo.jooq.views.empty.EmptyView;
+import ch.martinelli.demo.jooq.views.product.ProductView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -51,6 +52,7 @@ public class MainLayout extends AppLayout {
         SideNav nav = new SideNav();
 
         nav.addItem(new SideNavItem("Empty", EmptyView.class, VaadinIcon.FILE.create()));
+        nav.addItem(new SideNavItem("Products", ProductView.class, VaadinIcon.TOOLBOX.create()));
 
         return nav;
     }
