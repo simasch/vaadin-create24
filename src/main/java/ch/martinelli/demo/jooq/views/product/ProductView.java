@@ -17,7 +17,10 @@ import static ch.martinelli.demo.jooq.db.tables.Product.PRODUCT;
 public class ProductView extends VerticalLayout {
 
     public ProductView(ProductDao productDao) {
+        setSizeFull();
+        
         Grid<ProductRecord> grid = new Grid<>();
+        grid.setSizeFull();
 
         grid.addColumn(ProductRecord::getId).setHeader("ID").setSortable(true).setSortProperty(PRODUCT.ID.getName());
         grid.addColumn(ProductRecord::getName).setHeader("Name").setSortable(true).setSortProperty(PRODUCT.NAME.getName());
