@@ -18,22 +18,22 @@ public class ProductView extends VerticalLayout {
 
     public ProductView(ProductDao productDao) {
         setSizeFull();
-        
+
         Grid<ProductRecord> grid = new Grid<>();
         grid.setSizeFull();
+
+        ProductDialog dialog = new ProductDialog(p -> {
+            productDao.save(p);
+            grid.getDataProvider().refreshAll();
+        });
 
         grid.addColumn(ProductRecord::getId).setHeader("ID").setSortable(true).setSortProperty(PRODUCT.ID.getName());
         grid.addColumn(ProductRecord::getName).setHeader("Name").setSortable(true).setSortProperty(PRODUCT.NAME.getName());
         grid.addColumn(ProductRecord::getPrice).setHeader("Price").setSortable(true).setSortProperty(PRODUCT.PRICE.getName());
 
         grid.addComponentColumn(product ->
-                new Button("Edit", event -> {
-                    ProductDialog dialog = new ProductDialog(p -> {
-                        productDao.save(p);
-                        grid.getDataProvider().refreshAll();
-                    });
-                    dialog.open(product);
-                }));
+                        new Button("Edit", event -> dialog.open(product)))
+                .setHeader(new Button("Add", event -> dialog.open(new ProductRecord())));
 
         add(grid);
 
