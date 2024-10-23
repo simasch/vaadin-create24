@@ -52,7 +52,9 @@ public class ProductDialog extends Dialog {
     }
 
     public void open(ProductRecord product) {
-        setHeaderTitle("Edit Product " + product.getId());
+        if (product.getId() != null) {
+            setHeaderTitle("Edit Product " + product.getId());
+        }
 
         super.open();
         binder.setBean(product);
