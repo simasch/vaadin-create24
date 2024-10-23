@@ -52,7 +52,7 @@ public class MainLayout extends AppLayout {
         SideNav nav = new SideNav();
 
         nav.addItem(new SideNavItem("Empty", EmptyView.class, VaadinIcon.FILE.create()));
-        nav.addItem(new SideNavItem("Products", ProductView.class, VaadinIcon.TOOLBOX.create()));
+        nav.addItem(new SideNavItem("Products", ProductView.class, VaadinIcon.ARCHIVE.create()));
 
         return nav;
     }

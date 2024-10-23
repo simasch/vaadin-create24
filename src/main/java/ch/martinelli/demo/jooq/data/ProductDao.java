@@ -19,9 +19,7 @@ public class ProductDao {
         this.dslContext = dslContext;
     }
 
-    public List<ProductRecord> findAll(int offset, int limit, List<OrderField<?>> orderFields) {
-        List<OrderField<?>> orderBy = orderFields.isEmpty() ? List.of(PRODUCT.ID) : orderFields;
-
+    public List<ProductRecord> findAll(int offset, int limit, List<OrderField<?>> orderBy) {
         return dslContext.selectFrom(PRODUCT)
                 .orderBy(orderBy)
                 .offset(offset)

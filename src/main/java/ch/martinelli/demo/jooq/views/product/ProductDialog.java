@@ -1,6 +1,8 @@
 package ch.martinelli.demo.jooq.views.product;
 
 import ch.martinelli.demo.jooq.db.tables.records.ProductRecord;
+import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -9,13 +11,11 @@ import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 
-import java.util.function.Consumer;
-
 public class ProductDialog extends Dialog {
 
     private final Binder<ProductRecord> binder = new Binder<>(ProductRecord.class);
 
-    public ProductDialog(Consumer<ProductRecord> onSave) {
+    public ProductDialog() {
         setHeaderTitle("Edit Product");
 
         FormLayout form = new FormLayout();
@@ -38,12 +38,17 @@ public class ProductDialog extends Dialog {
 
         Button save = new Button("Save", event -> {
             if (binder.validate().isOk()) {
-                onSave.accept(binder.getBean());
+                fireEvent(new ProductSavedEvent(this, binder.getBean()));
                 close();
             }
         });
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        save.setAutofocus(true);
         getFooter().add(cancel, save);
+    }
+
+    public void addSaveListener(ComponentEventListener<ProductSavedEvent> listener) {
+        addListener(ProductSavedEvent.class, listener);
     }
 
     public void open(ProductRecord product) {
@@ -51,5 +56,19 @@ public class ProductDialog extends Dialog {
 
         super.open();
         binder.setBean(product);
+    }
+
+    public static class ProductSavedEvent extends ComponentEvent<ProductDialog> {
+
+        private final transient ProductRecord product;
+
+        public ProductSavedEvent(ProductDialog source, ProductRecord product) {
+            super(source, false);
+            this.product = product;
+        }
+
+        public ProductRecord getProduct() {
+            return product;
+        }
     }
 }
