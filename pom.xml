@@ -155,6 +155,7 @@
                                     <database>
                                         <inputSchema>public</inputSchema>
                                         <excludes>flyway_schema_history</excludes>
+                                        <recordVersionFields>version</recordVersionFields>
                                     </database>
                                     <generate>
                                         <!--
