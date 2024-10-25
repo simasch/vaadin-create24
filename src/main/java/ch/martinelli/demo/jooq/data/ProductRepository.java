@@ -11,11 +11,11 @@ import java.util.List;
 import static ch.martinelli.demo.jooq.db.tables.Product.PRODUCT;
 
 @Repository
-public class ProductDao {
+public class ProductRepository {
 
     private final DefaultDSLContext dslContext;
 
-    public ProductDao(DefaultDSLContext dslContext) {
+    public ProductRepository(DefaultDSLContext dslContext) {
         this.dslContext = dslContext;
     }
 

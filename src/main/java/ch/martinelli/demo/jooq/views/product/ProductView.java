@@ -1,6 +1,6 @@
 package ch.martinelli.demo.jooq.views.product;
 
-import ch.martinelli.demo.jooq.data.ProductDao;
+import ch.martinelli.demo.jooq.data.ProductRepository;
 import ch.martinelli.demo.jooq.db.tables.records.ProductRecord;
 import ch.martinelli.demo.jooq.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -20,7 +20,7 @@ public class ProductView extends VerticalLayout {
 
     private final ProductDialog dialog = new ProductDialog();
 
-    public ProductView(ProductDao productDao) {
+    public ProductView(ProductRepository productRepository) {
         setSizeFull();
 
         Grid<ProductRecord> grid = new Grid<>();
@@ -42,12 +42,12 @@ public class ProductView extends VerticalLayout {
 
         grid.sort(GridSortOrder.asc(idColumn).build());
 
-        grid.setItems(q -> productDao.findAll(
+        grid.setItems(q -> productRepository.findAll(
                 q.getOffset(), q.getLimit(),
                 VaadinJooqUtil.orderFields(PRODUCT, q)).stream());
 
         dialog.addSaveListener(event -> {
-            productDao.save(event.getProduct());
+            productRepository.save(event.getProduct());
             grid.getDataProvider().refreshAll();
         });
     }
