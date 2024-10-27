@@ -37,8 +37,10 @@ public class QueryTest {
     @Test
     void insert_athlete() {
         Long id = dsl.insertInto(ATHLETE)
-                .columns(ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME, ATHLETE.GENDER, ATHLETE.YEAR_OF_BIRTH, ATHLETE.CLUB_ID, ATHLETE.ORGANIZATION_ID)
-                .values("Mujinga", "Kambundji", "f", 1992, 1L, 1L)
+                .columns(ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME, ATHLETE.GENDER, ATHLETE.YEAR_OF_BIRTH,
+                        ATHLETE.CLUB_ID, ATHLETE.ORGANIZATION_ID)
+                .values("Mujinga", "Kambundji", "f", 1992,
+                        1L, 1L)
                 .returningResult(ATHLETE.ID)
                 .fetchOneInto(Long.class);
 
@@ -86,7 +88,7 @@ public class QueryTest {
                 .fetchInto(AthleteDTO.class);
 
         assertThat(athletes).hasSize(1);
-        assertThat(athletes.get(0)).satisfies(athlete -> {
+        assertThat(athletes.getFirst()).satisfies(athlete -> {
             assertThat(athlete.firstName()).isEqualTo("Armand");
             assertThat(athlete.lastName()).isEqualTo("Duplantis");
             assertThat(athlete.clubName()).isEqualTo("Louisiana State University");
