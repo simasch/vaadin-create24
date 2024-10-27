@@ -33,4 +33,8 @@ public class AthleteRepository {
         athlete.store();
     }
 
+    @Transactional
+    public void deleteById(Long id) {
+        dslContext.deleteFrom(ATHLETE).where(ATHLETE.ID.eq(id)).execute();
+    }
 }
