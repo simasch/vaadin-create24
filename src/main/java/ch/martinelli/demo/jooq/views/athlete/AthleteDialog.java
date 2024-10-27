@@ -1,7 +1,8 @@
 package ch.martinelli.demo.jooq.views.athlete;
 
+import ch.martinelli.demo.jooq.data.ClubRepository;
 import ch.martinelli.demo.jooq.db.tables.records.AthleteRecord;
-import com.vaadin.flow.component.ComponentEvent;
+import ch.martinelli.demo.jooq.db.tables.records.ClubRecord;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -13,12 +14,18 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 
 import java.util.List;
+import java.util.Map;
 
 public class AthleteDialog extends Dialog {
 
+    private final ClubRepository clubRepository;
     private final Binder<AthleteRecord> binder = new Binder<>(AthleteRecord.class);
+    private Map<Long, ClubRecord> clubMap;
+    private final Select<Long> club;
 
-    public AthleteDialog() {
+    public AthleteDialog(ClubRepository clubRepository) {
+        this.clubRepository = clubRepository;
+
         FormLayout form = new FormLayout();
         add(form);
 
@@ -45,7 +52,16 @@ public class AthleteDialog extends Dialog {
                 .asRequired("Year of birth is required")
                 .bind(AthleteRecord::getYearOfBirth, AthleteRecord::setYearOfBirth);
 
-        form.add(firstName, lastName, gender, yearOfBirth);
+        club = new Select<>();
+        club.setLabel("Club");
+        club.setItemLabelGenerator(clubId -> {
+            ClubRecord clubRecord = clubMap.get(clubId);
+            return "%s %s".formatted(clubRecord.getAbbreviation(), clubRecord.getName());
+        });
+        binder.forField(club)
+                .bind(AthleteRecord::getClubId, AthleteRecord::setClubId);
+
+        form.add(firstName, lastName, gender, yearOfBirth, club);
 
         Button cancel = new Button("Cancel", event -> close());
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
@@ -66,22 +82,11 @@ public class AthleteDialog extends Dialog {
     }
 
     public void open(AthleteRecord athlete) {
+        clubMap = clubRepository.findAll();
+        club.setItems(clubMap.keySet());
+
         binder.setBean(athlete);
         setHeaderTitle(athlete.getId() != null ? "Edit Athlete " + athlete.getId() : "Create Athlete");
         super.open();
-    }
-
-    public static class AthleteSavedEvent extends ComponentEvent<AthleteDialog> {
-
-        private final transient AthleteRecord athlete;
-
-        public AthleteSavedEvent(AthleteDialog source, AthleteRecord athlete) {
-            super(source, false);
-            this.athlete = athlete;
-        }
-
-        public AthleteRecord getAthlete() {
-            return athlete;
-        }
     }
 }

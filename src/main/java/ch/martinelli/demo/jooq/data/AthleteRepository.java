@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ch.martinelli.demo.jooq.db.tables.Athlete.ATHLETE;
+import static org.jooq.Records.mapping;
 
 @Repository
 public class AthleteRepository {
@@ -19,16 +21,24 @@ public class AthleteRepository {
         this.dslContext = dslContext;
     }
 
-    public List<AthleteRecord> findAll(int offset, int limit, List<OrderField<?>> orderBy) {
-        return dslContext.selectFrom(ATHLETE)
+    public List<AthleteDTO> findAll(int offset, int limit, List<OrderField<?>> orderBy) {
+        return dslContext
+                .select(ATHLETE.ID, ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME, ATHLETE.club().NAME)
+                .from(ATHLETE)
                 .orderBy(orderBy)
                 .offset(offset)
                 .limit(limit)
-                .fetch();
+                .fetch(mapping(AthleteDTO::new));
     }
 
     public int count() {
         return dslContext.fetchCount(ATHLETE);
+    }
+
+    public Optional<AthleteRecord> findById(Long id) {
+        return dslContext.selectFrom(ATHLETE)
+                .where(ATHLETE.ID.eq(id))
+                .fetchOptional();
     }
 
     @Transactional
@@ -41,4 +51,5 @@ public class AthleteRepository {
     public void deleteById(Long id) {
         dslContext.deleteFrom(ATHLETE).where(ATHLETE.ID.eq(id)).execute();
     }
+
 }
