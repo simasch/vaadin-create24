@@ -62,7 +62,10 @@ public class AthleteView extends VerticalLayout {
                 q -> athleteRepository.count());
 
         grid.setMultiSort(true);
-        grid.sort(new GridSortOrderBuilder<AthleteDTO>().thenAsc(firstName).thenAsc(lastName).build());
+        grid.sort(new GridSortOrderBuilder<AthleteDTO>()
+                .thenAsc(firstName)
+                .thenAsc(lastName)
+                .build());
 
         dialog.addSaveListener(event -> {
             athleteRepository.save(event.getAthlete());
@@ -75,15 +78,16 @@ public class AthleteView extends VerticalLayout {
                 athleteRepository.findById(athlete.id()).ifPresent(dialog::open));
 
         var delete = new Button("Delete", event ->
-                new ConfirmDialog("Delete Athlete",
+                new ConfirmDialog(
+                        "Delete Athlete",
                         "Are you sure?",
-                        "Delete", e -> {
-                    athleteRepository.deleteById(athlete.id());
-                    grid.getDataProvider().refreshAll();
-                },
-                        "Cancel", e -> {
-                })
-                        .open());
+                        "Delete",
+                        e -> {
+                            athleteRepository.deleteById(athlete.id());
+                            grid.getDataProvider().refreshAll();
+                        },
+                        "Cancel", e -> {}
+                ).open());
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
         var buttons = new HorizontalLayout(edit, delete);
