@@ -1,0 +1,120 @@
+package ch.martinelli.demo.jooq.data;
+
+import ch.martinelli.demo.jooq.TestConfiguration;
+import ch.martinelli.demo.jooq.db.tables.records.AthleteRecord;
+import ch.martinelli.demo.jooq.db.tables.records.CompetitionRecord;
+import org.jooq.DSLContext;
+import org.jooq.Record3;
+import org.jooq.Result;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jooq.JooqTest;
+import org.springframework.context.annotation.Import;
+
+import java.util.List;
+
+import static ch.martinelli.demo.jooq.db.tables.Athlete.ATHLETE;
+import static ch.martinelli.demo.jooq.db.tables.Club.CLUB;
+import static ch.martinelli.demo.jooq.db.tables.Competition.COMPETITION;
+import static org.assertj.core.api.Assertions.assertThat;
+
+@Import(TestConfiguration.class)
+@JooqTest
+public class QueryTest {
+
+    @Autowired
+    private DSLContext dsl;
+
+    @Test
+    void find_competitions() {
+        Result<CompetitionRecord> competitions = dsl
+                .selectFrom(COMPETITION)
+                .fetch();
+
+        assertThat(competitions).hasSize(1);
+    }
+
+    @Test
+    void insert_athlete() {
+        Long id = dsl.insertInto(ATHLETE)
+                .columns(ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME, ATHLETE.GENDER, ATHLETE.YEAR_OF_BIRTH, ATHLETE.CLUB_ID, ATHLETE.ORGANIZATION_ID)
+                .values("Mujinga", "Kambundji", "f", 1992, 1L, 1L)
+                .returningResult(ATHLETE.ID)
+                .fetchOneInto(Long.class);
+
+        assertThat(id).isEqualTo(1);
+    }
+
+    @Test
+    void updatable_record() {
+        AthleteRecord athlete = dsl.newRecord(ATHLETE);
+        athlete.setFirstName("Mujinga");
+        athlete.setLastName("Kambundji");
+        athlete.setGender("f");
+        athlete.setYearOfBirth(1992);
+        athlete.setClubId(1L);
+        athlete.setOrganizationId(1L);
+
+        athlete.store();
+
+        assertThat(athlete.getId()).isNotNull();
+    }
+
+    @Test
+    void projection() {
+        Result<Record3<String, String, String>> athletes = dsl
+                .select(ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME, CLUB.NAME)
+                .from(ATHLETE)
+                .join(CLUB).on(CLUB.ID.eq(ATHLETE.CLUB_ID))
+                .fetch();
+
+        assertThat(athletes).hasSize(1);
+        assertThat(athletes.getFirst()).satisfies(athlete -> {
+            assertThat(athlete.get(ATHLETE.FIRST_NAME)).isEqualTo("Armand");
+            assertThat(athlete.get(ATHLETE.LAST_NAME)).isEqualTo("Duplantis");
+            assertThat(athlete.get(CLUB.NAME)).isEqualTo("Louisiana State University");
+        });
+    }
+
+
+    @Test
+    void projection_using_java_record() {
+        List<AthleteDTO> athletes = dsl
+                .select(ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME, CLUB.NAME)
+                .from(ATHLETE)
+                .join(CLUB).on(CLUB.ID.eq(ATHLETE.CLUB_ID))
+                .fetchInto(AthleteDTO.class);
+
+        assertThat(athletes).hasSize(1);
+        assertThat(athletes.get(0)).satisfies(athlete -> {
+            assertThat(athlete.firstName()).isEqualTo("Armand");
+            assertThat(athlete.lastName()).isEqualTo("Duplantis");
+            assertThat(athlete.clubName()).isEqualTo("Louisiana State University");
+        });
+    }
+
+    @Test
+    void implicit_join() {
+        List<AthleteDTO> athletes = dsl
+                .select(ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME, ATHLETE.club().NAME)
+                .from(ATHLETE)
+                .fetchInto(AthleteDTO.class);
+
+        assertThat(athletes).hasSize(1);
+        assertThat(athletes.getFirst()).satisfies(athlete -> {
+            assertThat(athlete.firstName()).isEqualTo("Armand");
+            assertThat(athlete.lastName()).isEqualTo("Duplantis");
+            assertThat(athlete.clubName()).isEqualTo("Louisiana State University");
+        });
+    }
+
+    @Test
+    void delete() {
+        int deletedRows = dsl
+                .deleteFrom(ATHLETE)
+                .where(ATHLETE.ID.eq(1000L))
+                .execute();
+
+        assertThat(deletedRows).isEqualTo(1);
+    }
+}
