@@ -8,7 +8,7 @@ public record AthleteDTO(Long id, String firstName, String lastName, String club
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AthleteDTO that = (AthleteDTO) o;
+        var that = (AthleteDTO) o;
         return Objects.equals(id, that.id);
     }
 

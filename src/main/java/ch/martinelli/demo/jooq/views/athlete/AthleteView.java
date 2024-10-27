@@ -43,10 +43,10 @@ public class AthleteView extends VerticalLayout {
         grid.addColumn(AthleteDTO::id).setHeader("ID")
                 .setSortable(true).setSortProperty(ATHLETE.ID.getName())
                 .setAutoWidth(true);
-        Grid.Column<AthleteDTO> firstName = grid.addColumn(AthleteDTO::firstName).setHeader("First Name")
+        var firstName = grid.addColumn(AthleteDTO::firstName).setHeader("First Name")
                 .setSortable(true).setSortProperty(ATHLETE.FIRST_NAME.getName())
                 .setAutoWidth(true);
-        Grid.Column<AthleteDTO> lastName = grid.addColumn(AthleteDTO::lastName).setHeader("Last Name")
+        var lastName = grid.addColumn(AthleteDTO::lastName).setHeader("Last Name")
                 .setSortable(true).setSortProperty(ATHLETE.LAST_NAME.getName())
                 .setAutoWidth(true);
         grid.addColumn(AthleteDTO::clubName).setHeader("Club")
@@ -71,10 +71,10 @@ public class AthleteView extends VerticalLayout {
     }
 
     private HorizontalLayout createActions(AthleteDTO athlete) {
-        Button edit = new Button("Edit", event ->
+        var edit = new Button("Edit", event ->
                 athleteRepository.findById(athlete.id()).ifPresent(dialog::open));
 
-        Button delete = new Button("Delete", event ->
+        var delete = new Button("Delete", event ->
                 new ConfirmDialog("Delete Athlete",
                         "Are you sure?",
                         "Delete", e -> {
@@ -86,7 +86,7 @@ public class AthleteView extends VerticalLayout {
                         .open());
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
-        HorizontalLayout buttons = new HorizontalLayout(edit, delete);
+        var buttons = new HorizontalLayout(edit, delete);
         buttons.setPadding(false);
         buttons.setJustifyContentMode(JustifyContentMode.END);
         return buttons;

@@ -26,28 +26,28 @@ public class AthleteDialog extends Dialog {
     public AthleteDialog(ClubRepository clubRepository) {
         this.clubRepository = clubRepository;
 
-        FormLayout form = new FormLayout();
+        var form = new FormLayout();
         add(form);
 
-        TextField firstName = new TextField("First Name");
+        var firstName = new TextField("First Name");
         firstName.setAutofocus(true);
         binder.forField(firstName)
                 .asRequired("First name is required")
                 .bind(AthleteRecord::getFirstName, AthleteRecord::setFirstName);
 
-        TextField lastName = new TextField("Last Name");
+        var lastName = new TextField("Last Name");
         binder.forField(lastName)
                 .asRequired("Last name is required")
                 .bind(AthleteRecord::getLastName, AthleteRecord::setLastName);
 
-        Select<String> gender = new Select<>();
+        var gender = new Select<String>();
         gender.setLabel("Gender");
         gender.setItems(List.of("f", "m"));
         binder.forField(gender)
                 .asRequired("Gender is required")
                 .bind(AthleteRecord::getGender, AthleteRecord::setGender);
 
-        IntegerField yearOfBirth = new IntegerField("Year of Birth");
+        var yearOfBirth = new IntegerField("Year of Birth");
         binder.forField(yearOfBirth)
                 .asRequired("Year of birth is required")
                 .bind(AthleteRecord::getYearOfBirth, AthleteRecord::setYearOfBirth);
@@ -63,10 +63,10 @@ public class AthleteDialog extends Dialog {
 
         form.add(firstName, lastName, gender, yearOfBirth, club);
 
-        Button cancel = new Button("Cancel", event -> close());
+        var cancel = new Button("Cancel", event -> close());
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
-        Button save = new Button("Save", event -> {
+        var save = new Button("Save", event -> {
             if (binder.validate().isOk()) {
                 fireEvent(new AthleteSavedEvent(this, binder.getBean()));
                 close();
@@ -74,6 +74,7 @@ public class AthleteDialog extends Dialog {
         });
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.setAutofocus(true);
+
         getFooter().add(cancel, save);
     }
 
@@ -87,6 +88,7 @@ public class AthleteDialog extends Dialog {
 
         binder.setBean(athlete);
         setHeaderTitle(athlete.getId() != null ? "Edit Athlete " + athlete.getId() : "Create Athlete");
+
         super.open();
     }
 }

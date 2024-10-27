@@ -28,7 +28,7 @@ public class MainLayout extends AppLayout {
     }
 
     private void addHeaderContent() {
-        DrawerToggle toggle = new DrawerToggle();
+        var toggle = new DrawerToggle();
         toggle.setAriaLabel("Menu toggle");
 
         viewTitle = new H1();
@@ -38,17 +38,17 @@ public class MainLayout extends AppLayout {
     }
 
     private void addDrawerContent() {
-        Span appName = new Span("Vaadin Create 24");
+        var appName = new Span("Vaadin Create 24");
         appName.addClassNames(LumoUtility.FontWeight.SEMIBOLD, LumoUtility.FontSize.LARGE);
-        Header header = new Header(appName);
+        var header = new Header(appName);
 
-        Scroller scroller = new Scroller(createNavigation());
+        var scroller = new Scroller(createNavigation());
 
         addToDrawer(header, scroller, createFooter());
     }
 
     private SideNav createNavigation() {
-        SideNav nav = new SideNav();
+        var nav = new SideNav();
 
         nav.addItem(new SideNavItem("Athletes", AthleteView.class, VaadinIcon.GROUP.create()));
 
@@ -56,7 +56,7 @@ public class MainLayout extends AppLayout {
     }
 
     private Footer createFooter() {
-        Footer layout = new Footer();
+        var layout = new Footer();
 
         return layout;
     }

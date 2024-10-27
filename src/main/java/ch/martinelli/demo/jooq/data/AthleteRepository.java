@@ -50,7 +50,8 @@ public class AthleteRepository {
     }
 
     public Optional<AthleteRecord> findById(Long id) {
-        return dslContext.selectFrom(ATHLETE)
+        return dslContext
+                .selectFrom(ATHLETE)
                 .where(ATHLETE.ID.eq(id))
                 .fetchOptional();
     }
