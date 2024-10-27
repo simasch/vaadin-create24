@@ -39,12 +39,16 @@ public class AthleteView extends VerticalLayout {
         add(grid);
 
         grid.addColumn(AthleteDTO::id).setHeader("ID")
-                .setSortable(true).setSortProperty(ATHLETE.ID.getName());
+                .setSortable(true).setSortProperty(ATHLETE.ID.getName())
+                .setAutoWidth(true);
         Grid.Column<AthleteDTO> firstName = grid.addColumn(AthleteDTO::firstName).setHeader("First Name")
-                .setSortable(true).setSortProperty(ATHLETE.FIRST_NAME.getName());
+                .setSortable(true).setSortProperty(ATHLETE.FIRST_NAME.getName())
+                .setAutoWidth(true);
         Grid.Column<AthleteDTO> lastName = grid.addColumn(AthleteDTO::lastName).setHeader("Last Name")
-                .setSortable(true).setSortProperty(ATHLETE.LAST_NAME.getName());
-        grid.addColumn(AthleteDTO::clubName).setHeader("Club");
+                .setSortable(true).setSortProperty(ATHLETE.LAST_NAME.getName())
+                .setAutoWidth(true);
+        grid.addColumn(AthleteDTO::clubName).setHeader("Club")
+                .setAutoWidth(true);
 
         grid.addComponentColumn(this::createActions)
                 .setHeader(new Button("Add", event -> dialog.open(new AthleteRecord())))

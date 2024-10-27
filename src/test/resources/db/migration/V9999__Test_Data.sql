@@ -12,7 +12,7 @@ VALUES (1, 'STB', 'Stadtturnverein Bern', 1);
 INSERT INTO club (id, abbreviation, name, organization_id)
 VALUES (2, 'LSU', 'Louisiana State University', 1);
 INSERT INTO club (id, abbreviation, name, organization_id)
-VALUES (2, 'TVE', 'Turnverein Erlach', 1);
+VALUES (3, 'TVE', 'Turnverein Erlach', 1);
 
 INSERT INTO athlete (id, first_name, last_name, gender, year_of_birth, club_id, organization_id)
 VALUES (1000, 'Armand', 'Duplantis', 'm', 1999, 2, 1);
