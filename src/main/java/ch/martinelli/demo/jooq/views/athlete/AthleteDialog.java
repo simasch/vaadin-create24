@@ -66,8 +66,8 @@ public class AthleteDialog extends Dialog {
     }
 
     public void open(AthleteRecord athlete) {
-        setHeaderTitle(athlete.getId() != null ? "Edit Athlete " + athlete.getId() : "Create Athlete");
         binder.setBean(athlete);
+        setHeaderTitle(athlete.getId() != null ? "Edit Athlete " + athlete.getId() : "Create Athlete");
         super.open();
     }
 

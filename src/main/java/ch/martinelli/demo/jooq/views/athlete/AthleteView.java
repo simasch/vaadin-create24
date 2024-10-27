@@ -11,6 +11,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.provider.CallbackDataProvider;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -25,6 +26,7 @@ public class AthleteView extends VerticalLayout {
 
     private final AthleteRepository athleteRepository;
     private final AthleteDialog dialog = new AthleteDialog();
+    private final CallbackDataProvider<AthleteRecord, Void> dataProvider;
 
     public AthleteView(AthleteRepository athleteRepository) {
         this.athleteRepository = athleteRepository;
@@ -33,6 +35,7 @@ public class AthleteView extends VerticalLayout {
 
         Grid<AthleteRecord> grid = new Grid<>();
         grid.setSizeFull();
+        add(grid);
 
         Grid.Column<AthleteRecord> idColumn = grid.addColumn(AthleteRecord::getId).setHeader("ID")
                 .setSortable(true).setSortProperty(ATHLETE.ID.getName());
@@ -45,17 +48,20 @@ public class AthleteView extends VerticalLayout {
                 .setHeader(new Button("Add", event -> dialog.open(new AthleteRecord())))
                 .setTextAlign(ColumnTextAlign.END);
 
-        add(grid);
+        dataProvider = new CallbackDataProvider<>(
+                q -> athleteRepository.findAll(
+                        q.getOffset(), q.getLimit(),
+                        VaadinJooqUtil.orderFields(ATHLETE, q)).stream(),
+                q -> athleteRepository.count(),
+                AthleteRecord::getId
+        );
+        grid.setDataProvider(dataProvider);
 
         grid.sort(GridSortOrder.asc(idColumn).build());
 
-        grid.setItems(q -> athleteRepository.findAll(
-                q.getOffset(), q.getLimit(),
-                VaadinJooqUtil.orderFields(ATHLETE, q)).stream());
-
         dialog.addSaveListener(event -> {
             athleteRepository.save(event.getAthlete());
-            grid.getDataProvider().refreshAll();
+            dataProvider.refreshAll();
         });
     }
 
@@ -65,7 +71,8 @@ public class AthleteView extends VerticalLayout {
                 new ConfirmDialog("Delete Athlete",
                         "Are you sure?",
                         "Delete", e -> athleteRepository.deleteById(athlete.getId()),
-                        "Cancel", e -> {})
+                        "Cancel", e -> {
+                })
                         .open());
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         HorizontalLayout buttons = new HorizontalLayout(edit, delete);

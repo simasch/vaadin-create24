@@ -27,6 +27,10 @@ public class AthleteRepository {
                 .fetch();
     }
 
+    public int count() {
+        return dslContext.fetchCount(ATHLETE);
+    }
+
     @Transactional
     public void save(AthleteRecord athlete) {
         dslContext.attach(athlete);
