@@ -28,13 +28,15 @@ public class AthleteView extends VerticalLayout {
     private final AthleteRepository athleteRepository;
     private final AthleteDialog dialog;
 
+    private final Grid<AthleteDTO> grid;
+
     public AthleteView(AthleteRepository athleteRepository, ClubRepository clubRepository) {
         this.athleteRepository = athleteRepository;
         dialog = new AthleteDialog(clubRepository);
 
         setSizeFull();
 
-        Grid<AthleteDTO> grid = new Grid<>();
+        grid = new Grid<>();
         grid.setSizeFull();
         add(grid);
 
@@ -75,7 +77,10 @@ public class AthleteView extends VerticalLayout {
         Button delete = new Button("Delete", event ->
                 new ConfirmDialog("Delete Athlete",
                         "Are you sure?",
-                        "Delete", e -> athleteRepository.deleteById(athlete.id()),
+                        "Delete", e -> {
+                    athleteRepository.deleteById(athlete.id());
+                    grid.getDataProvider().refreshAll();
+                },
                         "Cancel", e -> {
                 })
                         .open());
