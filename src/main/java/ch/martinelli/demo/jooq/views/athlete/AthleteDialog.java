@@ -1,6 +1,6 @@
 package ch.martinelli.demo.jooq.views.athlete;
 
-import ch.martinelli.demo.jooq.data.ClubRepository;
+import ch.martinelli.demo.jooq.data.repository.ClubRepository;
 import ch.martinelli.demo.jooq.db.tables.records.AthleteRecord;
 import ch.martinelli.demo.jooq.db.tables.records.ClubRecord;
 import com.vaadin.flow.component.ComponentEventListener;

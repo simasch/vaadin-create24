@@ -1,4 +1,4 @@
-package ch.martinelli.demo.jooq.data;
+package ch.martinelli.demo.jooq.data.repository;
 
 import ch.martinelli.demo.jooq.db.tables.records.ClubRecord;
 import org.jooq.DSLContext;

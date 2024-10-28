@@ -1,14 +1,14 @@
-package ch.martinelli.demo.jooq.data;
+package ch.martinelli.demo.jooq.data.dto;
 
 import java.util.Objects;
 
-public record AthleteDTO(Long id, String firstName, String lastName, String clubName) {
+public record AthleteWithClubNameDTO(Long id, String firstName, String lastName, String clubName) {
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        var that = (AthleteDTO) o;
+        var that = (AthleteWithClubNameDTO) o;
         return Objects.equals(id, that.id);
     }
 

@@ -1,8 +1,8 @@
 package ch.martinelli.demo.jooq.views.athlete;
 
-import ch.martinelli.demo.jooq.data.AthleteDTO;
-import ch.martinelli.demo.jooq.data.AthleteRepository;
-import ch.martinelli.demo.jooq.data.ClubRepository;
+import ch.martinelli.demo.jooq.data.dto.AthleteWithClubNameDTO;
+import ch.martinelli.demo.jooq.data.repository.AthleteRepository;
+import ch.martinelli.demo.jooq.data.repository.ClubRepository;
 import ch.martinelli.demo.jooq.db.tables.records.AthleteRecord;
 import ch.martinelli.demo.jooq.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -28,7 +28,7 @@ public class AthleteView extends VerticalLayout {
     private final AthleteRepository athleteRepository;
     private final AthleteDialog dialog;
 
-    private final Grid<AthleteDTO> grid;
+    private final Grid<AthleteWithClubNameDTO> grid;
 
     public AthleteView(AthleteRepository athleteRepository, ClubRepository clubRepository) {
         this.athleteRepository = athleteRepository;
@@ -40,16 +40,16 @@ public class AthleteView extends VerticalLayout {
         grid.setSizeFull();
         add(grid);
 
-        grid.addColumn(AthleteDTO::id).setHeader("ID")
+        grid.addColumn(AthleteWithClubNameDTO::id).setHeader("ID")
                 .setSortable(true).setSortProperty(ATHLETE.ID.getName())
                 .setAutoWidth(true);
-        var firstName = grid.addColumn(AthleteDTO::firstName).setHeader("First Name")
+        var firstName = grid.addColumn(AthleteWithClubNameDTO::firstName).setHeader("First Name")
                 .setSortable(true).setSortProperty(ATHLETE.FIRST_NAME.getName())
                 .setAutoWidth(true);
-        var lastName = grid.addColumn(AthleteDTO::lastName).setHeader("Last Name")
+        var lastName = grid.addColumn(AthleteWithClubNameDTO::lastName).setHeader("Last Name")
                 .setSortable(true).setSortProperty(ATHLETE.LAST_NAME.getName())
                 .setAutoWidth(true);
-        grid.addColumn(AthleteDTO::clubName).setHeader("Club")
+        grid.addColumn(AthleteWithClubNameDTO::clubName).setHeader("Club")
                 .setAutoWidth(true);
 
         grid.addComponentColumn(this::createActions)
@@ -62,7 +62,7 @@ public class AthleteView extends VerticalLayout {
                 q -> athleteRepository.count());
 
         grid.setMultiSort(true);
-        grid.sort(new GridSortOrderBuilder<AthleteDTO>()
+        grid.sort(new GridSortOrderBuilder<AthleteWithClubNameDTO>()
                 .thenAsc(firstName)
                 .thenAsc(lastName)
                 .build());
@@ -73,7 +73,7 @@ public class AthleteView extends VerticalLayout {
         });
     }
 
-    private HorizontalLayout createActions(AthleteDTO athlete) {
+    private HorizontalLayout createActions(AthleteWithClubNameDTO athlete) {
         var edit = new Button("Edit", event ->
                 athleteRepository.findById(athlete.id()).ifPresent(dialog::open));
 

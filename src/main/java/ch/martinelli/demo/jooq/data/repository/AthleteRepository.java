@@ -1,5 +1,6 @@
-package ch.martinelli.demo.jooq.data;
+package ch.martinelli.demo.jooq.data.repository;
 
+import ch.martinelli.demo.jooq.data.dto.AthleteWithClubNameDTO;
 import ch.martinelli.demo.jooq.db.tables.records.AthleteRecord;
 import ch.martinelli.demo.jooq.db.tables.records.AthleteViewRecord;
 import org.jooq.DSLContext;
@@ -14,7 +15,7 @@ import static ch.martinelli.demo.jooq.db.tables.Athlete.ATHLETE;
 import static ch.martinelli.demo.jooq.db.tables.AthleteView.ATHLETE_VIEW;
 import static org.jooq.Records.mapping;
 import static org.jooq.impl.DSL.concat;
-import static org.jooq.impl.DSL.field;
+import static org.jooq.impl.DSL.val;
 
 @Repository
 public class AthleteRepository {
@@ -25,15 +26,15 @@ public class AthleteRepository {
         this.dslContext = dslContext;
     }
 
-    public List<AthleteDTO> findAll(int offset, int limit, List<OrderField<?>> orderBy) {
+    public List<AthleteWithClubNameDTO> findAll(int offset, int limit, List<OrderField<?>> orderBy) {
         return dslContext
                 .select(ATHLETE.ID, ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME,
-                        concat(ATHLETE.club().ABBREVIATION, field("' '"), ATHLETE.club().NAME))
+                        concat(ATHLETE.club().ABBREVIATION, val(" "), ATHLETE.club().NAME))
                 .from(ATHLETE)
                 .orderBy(orderBy)
                 .offset(offset)
                 .limit(limit)
-                .fetch(mapping(AthleteDTO::new));
+                .fetch(mapping(AthleteWithClubNameDTO::new));
     }
 
     public List<AthleteViewRecord> findAllFromView(int offset, int limit, List<OrderField<?>> orderBy) {
