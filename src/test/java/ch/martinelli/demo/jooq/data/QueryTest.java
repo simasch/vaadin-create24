@@ -168,6 +168,19 @@ public class QueryTest {
     }
 
     @Test
+    void converter() {
+        Gender.GenderConverter genderConverter = new Gender.GenderConverter();
+
+        List<Gender> genders = dslContext
+                .select(ATHLETE.GENDER.convert(genderConverter))
+                .from(ATHLETE)
+                .groupBy(ATHLETE.GENDER)
+                .fetchInto(Gender.class);
+
+        assertThat(genders).hasSize(1);
+        assertThat(genders.getFirst()).isEqualTo(Gender.MALE);
+    }
+    @Test
     void delete() {
         int deletedRows = dslContext
                 .deleteFrom(ATHLETE)

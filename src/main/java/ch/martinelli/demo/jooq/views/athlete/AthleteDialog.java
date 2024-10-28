@@ -1,5 +1,6 @@
 package ch.martinelli.demo.jooq.views.athlete;
 
+import ch.martinelli.demo.jooq.data.dto.Gender;
 import ch.martinelli.demo.jooq.data.repository.ClubRepository;
 import ch.martinelli.demo.jooq.db.tables.records.AthleteRecord;
 import ch.martinelli.demo.jooq.db.tables.records.ClubRecord;
@@ -13,13 +14,13 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 
-import java.util.List;
 import java.util.Map;
 
 public class AthleteDialog extends Dialog {
 
     private final ClubRepository clubRepository;
     private final Binder<AthleteRecord> binder = new Binder<>(AthleteRecord.class);
+    private final Gender.GenderConverter genderConverter = new Gender.GenderConverter();
     private Map<Long, ClubRecord> clubMap;
     private final Select<Long> club;
 
@@ -40,12 +41,13 @@ public class AthleteDialog extends Dialog {
                 .asRequired("Last name is required")
                 .bind(AthleteRecord::getLastName, AthleteRecord::setLastName);
 
-        var gender = new Select<String>();
+        var gender = new Select<Gender>();
         gender.setLabel("Gender");
-        gender.setItems(List.of("f", "m"));
+        gender.setItems(Gender.values());
+        gender.setItemLabelGenerator(Gender::getText);
         binder.forField(gender)
                 .asRequired("Gender is required")
-                .bind(AthleteRecord::getGender, AthleteRecord::setGender);
+                .bind(a -> genderConverter.from(a.getGender()), (a, g) -> a.setGender(g.getCode()));
 
         var yearOfBirth = new IntegerField("Year of Birth");
         binder.forField(yearOfBirth)
