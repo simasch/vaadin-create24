@@ -134,7 +134,8 @@ public class QueryTest {
     void row_value_constructor() {
         List<AthleteWithClubDTO> athletes = dslContext
                 .select(ATHLETE.ID, ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME,
-                        row(ATHLETE.club().ABBREVIATION, ATHLETE.club().NAME).mapping(ClubDTO::new))
+                        row(ATHLETE.club().ID, ATHLETE.club().ABBREVIATION, ATHLETE.club().NAME)
+                                .mapping(ClubDTO::new))
                 .from(ATHLETE)
                 .fetch(mapping(AthleteWithClubDTO::new));
 
@@ -149,7 +150,7 @@ public class QueryTest {
     @Test
     void multiset_value_constructor() {
         List<ClubWithAthletesDTO> clubs = dslContext
-                .select(CLUB.ABBREVIATION, CLUB.NAME,
+                .select(CLUB.ID, CLUB.ABBREVIATION, CLUB.NAME,
                         multiset(
                                 select(ATHLETE.ID, ATHLETE.FIRST_NAME, ATHLETE.LAST_NAME)
                                         .from(ATHLETE)
@@ -164,6 +165,7 @@ public class QueryTest {
         assertThat(clubs.getFirst()).satisfies(club -> {
             assertThat(club.abbreviation()).isEqualTo("LSU");
             assertThat(club.athletes()).hasSize(1);
+            assertThat(club.athletes().getFirst().firstName()).isEqualTo("Armand");
         });
     }
 
@@ -180,6 +182,7 @@ public class QueryTest {
         assertThat(genders).hasSize(1);
         assertThat(genders.getFirst()).isEqualTo(Gender.MALE);
     }
+
     @Test
     void delete() {
         int deletedRows = dslContext

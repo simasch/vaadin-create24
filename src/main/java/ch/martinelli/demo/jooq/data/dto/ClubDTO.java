@@ -1,4 +1,4 @@
 package ch.martinelli.demo.jooq.data.dto;
 
-public record ClubDTO(String abbreviation, String name) {
+public record ClubDTO(Long id, String abbreviation, String name) {
 }
