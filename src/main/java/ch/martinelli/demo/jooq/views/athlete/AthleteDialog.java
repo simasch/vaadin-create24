@@ -92,6 +92,7 @@ public class AthleteDialog extends Dialog {
         club.setItems(clubMap.keySet());
 
         binder.setBean(athlete);
+
         setHeaderTitle(athlete.getId() != null ? "Edit Athlete " + athlete.getId() : "Create Athlete");
 
         super.open();
