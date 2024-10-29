@@ -48,7 +48,7 @@ public class QueryTest {
                 .returningResult(ATHLETE.ID)
                 .fetchOneInto(Long.class);
 
-        assertThat(id).isEqualTo(1);
+        assertThat(id).isEqualTo(1000L);
     }
 
     @Test
@@ -187,7 +187,7 @@ public class QueryTest {
     void delete() {
         int deletedRows = dslContext
                 .deleteFrom(ATHLETE)
-                .where(ATHLETE.ID.eq(1000L))
+                .where(ATHLETE.ID.eq(1L))
                 .execute();
 
         assertThat(deletedRows).isEqualTo(1);
@@ -197,7 +197,7 @@ public class QueryTest {
     void delete_using_updatable_record() {
         AthleteRecord athleteRecord = dslContext
                 .selectFrom(ATHLETE)
-                .where(ATHLETE.ID.eq(1000L))
+                .where(ATHLETE.ID.eq(1L))
                 .fetchOne();
 
         assertThat(athleteRecord).isNotNull();
