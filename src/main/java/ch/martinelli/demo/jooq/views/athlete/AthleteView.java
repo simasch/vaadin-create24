@@ -31,7 +31,7 @@ public class AthleteView extends VerticalLayout {
 
     AthleteView(AthleteRepository athleteRepository, ClubRepository clubRepository) {
         this.athleteRepository = athleteRepository;
-        dialog = new AthleteDialog(clubRepository);
+        this.dialog = new AthleteDialog(clubRepository);
 
         setSizeFull();
 

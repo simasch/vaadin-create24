@@ -14,15 +14,16 @@ import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class AthleteDialog extends Dialog {
 
-    private final ClubRepository clubRepository;
     private final Binder<AthleteRecord> binder = new Binder<>(AthleteRecord.class);
     private final Gender.GenderConverter genderConverter = new Gender.GenderConverter();
-    private Map<Long, ClubRecord> clubMap;
+    private Map<Long, ClubRecord> clubMap = new HashMap<>();
     private final Select<Long> club;
+    private final ClubRepository clubRepository;
 
     public AthleteDialog(ClubRepository clubRepository) {
         this.clubRepository = clubRepository;
@@ -60,6 +61,7 @@ public class AthleteDialog extends Dialog {
             ClubRecord clubRecord = clubMap.get(clubId);
             return "%s %s".formatted(clubRecord.getAbbreviation(), clubRecord.getName());
         });
+        club.setItems(clubMap.keySet());
         binder.forField(club)
                 .bind(AthleteRecord::getClubId, AthleteRecord::setClubId);
 
@@ -85,7 +87,7 @@ public class AthleteDialog extends Dialog {
     }
 
     public void open(AthleteRecord athlete) {
-        clubMap = clubRepository.findAll();
+        this.clubMap = clubRepository.findAll();
         club.setItems(clubMap.keySet());
 
         binder.setBean(athlete);
