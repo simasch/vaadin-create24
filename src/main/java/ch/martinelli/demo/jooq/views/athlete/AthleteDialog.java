@@ -23,7 +23,7 @@ public class AthleteDialog extends Dialog {
     private final Binder<AthleteRecord> binder = new Binder<>(AthleteRecord.class);
     private final Gender.GenderConverter genderConverter = new Gender.GenderConverter();
     private Map<Long, ClubRecord> clubMap = new HashMap<>();
-    private final Select<Long> club;
+    private final Select<ClubRecord> club;
     private final ClubRepository clubRepository;
 
     public AthleteDialog(ClubRepository clubRepository) {
@@ -58,13 +58,9 @@ public class AthleteDialog extends Dialog {
 
         club = new Select<>();
         club.setLabel("Club");
-        club.setItemLabelGenerator(clubId -> {
-            ClubRecord clubRecord = clubMap.get(clubId);
-            return "%s %s".formatted(clubRecord.getAbbreviation(), clubRecord.getName());
-        });
-        club.setItems(clubMap.keySet());
+        club.setItemLabelGenerator(c -> "%s %s".formatted(c.getAbbreviation(), c.getName()));
         binder.forField(club)
-                .bind(AthleteRecord::getClubId, AthleteRecord::setClubId);
+                .bind(a -> clubMap.get(a.getClubId()), (a, c) -> a.setClubId(c.getId()));
 
         form.add(firstName, lastName, gender, yearOfBirth, club);
 
@@ -89,7 +85,7 @@ public class AthleteDialog extends Dialog {
 
     public void open(AthleteRecord athlete) {
         this.clubMap = clubRepository.findAll();
-        club.setItems(clubMap.keySet());
+        club.setItems(clubMap.values());
 
         binder.setBean(athlete);
 
