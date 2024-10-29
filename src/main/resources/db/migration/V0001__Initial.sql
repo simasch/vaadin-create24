@@ -1,4 +1,4 @@
-create sequence athlete_seq;
+create sequence athlete_seq start with 1000;
 
 create table athlete
 (
@@ -13,7 +13,7 @@ create table athlete
     organization_id bigint                default null
 );
 
-create sequence category_seq;
+create sequence category_seq start with 1000;
 
 create table category
 (
@@ -42,7 +42,7 @@ create table category_event
     position    int    not null
 );
 
-create sequence club_seq;
+create sequence club_seq start with 1000;
 
 create table club
 (
@@ -54,7 +54,7 @@ create table club
     organization_id bigint                default null
 );
 
-create sequence competition_seq;
+create sequence competition_seq start with 1000;
 
 create table competition
 (
@@ -69,7 +69,7 @@ create table competition
     series_id                 bigint               default null
 );
 
-create sequence event_seq;
+create sequence event_seq start with 1000;
 
 create table event
 (
@@ -86,7 +86,7 @@ create table event
     organization_id bigint                    default null
 );
 
-create sequence organization_seq;
+create sequence organization_seq start with 1000;
 
 create table organization
 (
@@ -103,7 +103,7 @@ create table organization_user
     user_id         bigint not null
 );
 
-create sequence result_seq;
+create sequence result_seq start with 1000;
 
 create table result
 (
@@ -119,7 +119,7 @@ create table result
     event_id       bigint      not null
 );
 
-create sequence security_group_seq;
+create sequence security_group_seq start with 1000;
 
 create table security_group
 (
@@ -128,7 +128,7 @@ create table security_group
     name varchar(50) not null
 );
 
-create sequence security_user_seq;
+create sequence security_user_seq start with 1000;
 
 create table security_user
 (
@@ -143,7 +143,7 @@ create table security_user
     confirmed       boolean               default false
 );
 
-create sequence series_seq;
+create sequence series_seq start with 1000;
 
 create table series
 (
