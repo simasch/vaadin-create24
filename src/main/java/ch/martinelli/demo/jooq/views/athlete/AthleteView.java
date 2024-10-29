@@ -55,7 +55,8 @@ public class AthleteView extends VerticalLayout {
                 .setHeader(new Button("Add", event -> dialog.open(new AthleteRecord())))
                 .setTextAlign(ColumnTextAlign.END);
 
-        grid.setItems(q -> athleteRepository.findAll(
+        grid.setItems(
+                q -> athleteRepository.findAll(
                         q.getOffset(), q.getLimit(),
                         VaadinJooqUtil.orderFields(ATHLETE, q)).stream(),
                 q -> athleteRepository.count());
@@ -85,7 +86,8 @@ public class AthleteView extends VerticalLayout {
                             athleteRepository.deleteById(athlete.id());
                             grid.getDataProvider().refreshAll();
                         },
-                        "Cancel", e -> {}
+                        "Cancel", e -> {
+                }
                 ).open());
         delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
 
