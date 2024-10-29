@@ -5,6 +5,7 @@ import ch.martinelli.demo.jooq.data.repository.ClubRepository;
 import ch.martinelli.demo.jooq.db.tables.records.AthleteRecord;
 import ch.martinelli.demo.jooq.db.tables.records.ClubRecord;
 import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -77,7 +78,7 @@ public class AthleteDialog extends Dialog {
             }
         });
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        save.setAutofocus(true);
+        save.addClickShortcut(Key.ENTER);
 
         getFooter().add(cancel, save);
     }
