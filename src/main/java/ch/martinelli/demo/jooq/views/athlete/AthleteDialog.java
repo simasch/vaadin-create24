@@ -47,7 +47,7 @@ public class AthleteDialog extends Dialog {
         gender.setItemLabelGenerator(Gender::getText);
         binder.forField(gender)
                 .asRequired("Gender is required")
-                .bind(a -> genderConverter.from(a.getGender()), (a, g) -> a.setGender(g.getCode()));
+                .bind(a -> a.getGender() != null ? genderConverter.from(a.getGender()) : null, (a, g) -> a.setGender(g.getCode()));
 
         var yearOfBirth = new IntegerField("Year of Birth");
         binder.forField(yearOfBirth)
