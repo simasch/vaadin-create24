@@ -1,6 +1,7 @@
 package ch.martinelli.demo.jooq.views;
 
 import ch.martinelli.demo.jooq.views.athlete.AthleteView;
+import ch.martinelli.demo.jooq.views.club.ClubView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.Footer;
@@ -52,7 +53,8 @@ import com.vaadin.flow.theme.lumo.LumoUtility;
     private SideNav createNavigation() {
         var nav = new SideNav();
 
-        nav.addItem(new SideNavItem("Athletes", AthleteView.class, VaadinIcon.GROUP.create()));
+        nav.addItem(new SideNavItem("Athletes", AthleteView.class, VaadinIcon.FAMILY.create()));
+        nav.addItem(new SideNavItem("Clubs", ClubView.class, VaadinIcon.INSTITUTION.create()));
 
         return nav;
     }
