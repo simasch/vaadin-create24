@@ -4,7 +4,6 @@ import ch.martinelli.demo.jooq.data.dto.AthleteWithClubNameDTO;
 import ch.martinelli.demo.jooq.data.repository.AthleteRepository;
 import ch.martinelli.demo.jooq.data.repository.ClubRepository;
 import ch.martinelli.demo.jooq.db.tables.records.AthleteRecord;
-import ch.martinelli.demo.jooq.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
@@ -21,8 +20,8 @@ import io.seventytwo.vaadinjooq.util.VaadinJooqUtil;
 import static ch.martinelli.demo.jooq.db.tables.Athlete.ATHLETE;
 
 @PageTitle("Athletes")
-@Route(value = "athletes", layout = MainLayout.class)
-@RouteAlias(value = "", layout = MainLayout.class)
+@Route(value = "athletes")
+@RouteAlias(value = "")
 public class AthleteView extends VerticalLayout {
 
     private final AthleteRepository athleteRepository;
@@ -30,7 +29,7 @@ public class AthleteView extends VerticalLayout {
 
     private final Grid<AthleteWithClubNameDTO> grid;
 
-    public AthleteView(AthleteRepository athleteRepository, ClubRepository clubRepository) {
+    AthleteView(AthleteRepository athleteRepository, ClubRepository clubRepository) {
         this.athleteRepository = athleteRepository;
         dialog = new AthleteDialog(clubRepository);
 
